@@ -20,7 +20,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+
+app.get("/", (req, res) => {
+  res.json("hello world");
+});
+
 app.use("/user", userRoutes);
 app.use("/history", historyRoutes);
 
