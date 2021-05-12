@@ -5,7 +5,7 @@ FROM node:12-alpine
 
 
 COPY package.json .
-COPY yarn* .
+COPY yarn.lock .
 
 RUN yarn install
 
