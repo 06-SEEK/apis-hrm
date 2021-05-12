@@ -24,3 +24,10 @@ deploy:
     heroku container:release web --app $HEROKU_APP_NAME;
   on:
     branch: main
+
+notifications:  
+  email:
+    recipients:
+      - levanhiep.95.95@gmail.com
+    on_success: always  
+    on_failure: always
