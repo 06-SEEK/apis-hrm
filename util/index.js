@@ -1,6 +1,9 @@
-const createToken = require('./createToken')
-const intDate = require('./intDate')
+const error = require('./ApiError');
+const catchAsync = require('./catchAsync');
 module.exports = {
-  createToken,
-  intDate
-}
+  ApiError: error.ApiError,
+  errorHandler: error.errorHandler,
+  notFound: error.notFound,
+  converter: error.converter,
+  catchAsync
+};

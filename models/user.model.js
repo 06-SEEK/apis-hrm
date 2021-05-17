@@ -1,40 +1,68 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const { ApiError } = require('../util');
+const httpStatus = require('http-status');
+const jwt = require('jsonwebtoken');
+const config = require('../config');
+
 
 let userSchema = new mongoose.Schema(
-  {
-    phone: String,
-    name: String,
-    email: String,
-    password: String,
-    avatar: String,
-    create_at: Date,
-    updated_at: Date,
-    is_deleted: Boolean,
-  },
-  { versionKey: false }
+	{
+		phone: String,
+		name: String,
+    email: {
+      type: String,
+      required: [true, 'Please enter an email'],
+      unique: true,
+      lowercase: true
+    },
+		password: {
+      type: String,
+      required: [true, 'Please enter a password'],
+    },
+		avatar: String,
+	},
+	{ versionKey: false, timestamps: true }
 );
 
-let User = mongoose.model("User", userSchema, "users");
+userSchema.pre('save', async function (next) {
+	const user = this;
+	if (user.isModified('password')) {
+		user.password = await bcrypt.hash(user.password, 10);
+	}
+  next();
+});
 
-module.exports = {
-  findByLambda: async function (lambda) {
-    return await User.find(lambda.query, lambda.views);
+userSchema.method({
+  transform() {
+    const transformed = {};
+    const fields = ['phone', 'name', 'email', 'avatar'];
+    fields.forEach(field => transformed[field] = this[field]);
+    return transformed;
   },
-  findByEmailPassword: async function (lambda) {
-    lambda = {
-      ...lambda,
-      is_deleted: false,
-    };
-    return await User.aggregate([
-      {
-        $match: lambda,
-      },
-    ]);
-  },
-  createByLambda: async function (lambda) {
-    return await User.insertMany(lambda);
-  },
-  updateByLambda: async function (id, lambda) {
-    return await User.updateOne(id, lambda);
-  },
-};
+  token() {
+    const token = jwt.sign({ sub: this._id }, config.secret_key);
+    return token;
+  }
+})
+
+
+userSchema.statics.findByCredentials = async function (email, password) {
+  const user = await this.findOne({ email });
+  if (!user) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid login credentials', true);
+  }
+  const isPasswordMatch = await bcrypt.compare(password, user.password);
+  if (!isPasswordMatch) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid login credentials', true);
+  }
+  return user;
+}
+
+
+
+const User = mongoose.model('User', userSchema, 'users');
+
+
+
+module.exports = User;

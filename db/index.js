@@ -1,11 +1,9 @@
 // connection database
 
 const mongoose = require("mongoose");
-const config = require("../config");
 
-const { mongoURL } = config;
-const connectDb = () => {
-  return mongoose.connect(mongoURL, {
+const connectDb = (uri) => {
+  return mongoose.connect(uri, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     useCreateIndex: true,
