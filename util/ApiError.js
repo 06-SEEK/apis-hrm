@@ -8,11 +8,12 @@ const httpStatus = require('http-status');
    	*@param {boolean} isOperational - Whether the stack should be visible or not. True if not visible.
 */
 class ApiError extends Error {
-	constructor(statusCode, message, isOperational = false) {
+	constructor(statusCode, message, isOperational = true, stack) {
 		super(message);
 		this.statusCode = statusCode;
 		this.message = message;
 		this.isOperational = isOperational;
+		this.stack = stack;
 	}
 }
 
@@ -37,10 +38,11 @@ const errorHandler = (err, req, res, next) => {
 const converter = (err, req, res, next) => {
 	let convertedError = err;
 	if (err instanceof ValidationError) {
-		convertedError = new ApiError(err.statusCode, 'Validation Error', true);
+		convertedError = new ApiError(err.statusCode, 'Validation Error');
 	}
 	else if (!(err instanceof ApiError)) {
-		convertedError = new ApiError(err.status, err.message);
+		//unexpected error, log error
+		convertedError = new ApiError(err.status, err.message, false, err.stack);
 	}
 
 	return errorHandler(convertedError, req, res);
@@ -50,7 +52,7 @@ const converter = (err, req, res, next) => {
  * Catch 404 and forward to error handler
  */
 const notFound = (req, res, next) => {
-	const err = new ApiError(httpStatus.NOT_FOUND, 'Not found', true);
+	const err = new ApiError(httpStatus.NOT_FOUND, 'Not found');
 	return errorHandler(err, req, res);
 };
 

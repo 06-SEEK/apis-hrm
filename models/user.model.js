@@ -50,11 +50,11 @@ userSchema.method({
 userSchema.statics.findByCredentials = async function (email, password) {
   const user = await this.findOne({ email });
   if (!user) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid login credentials', true);
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid login credentials');
   }
   const isPasswordMatch = await bcrypt.compare(password, user.password);
   if (!isPasswordMatch) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid login credentials', true);
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid login credentials');
   }
   return user;
 }
