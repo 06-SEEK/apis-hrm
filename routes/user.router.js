@@ -1,8 +1,9 @@
 const express = require('express');
+
 const router = express.Router();
+const { validate } = require('express-validation');
 const controller = require('../controllers/user.controller');
-const { login,register } = require('../validations/user.validation');
-const {validate} = require('express-validation');
+const { login, register } = require('../validations/user.validation');
 const auth = require('../middlewares/auth');
 
 /**
@@ -21,11 +22,9 @@ const auth = require('../middlewares/auth');
  * @apiSuccess (Created 201) {String}   avatar    User's avatar if exists
  *
  * @apiError (Bad Request 400)  ValidationError     Some parameters may contain invalid values
- * @apiError (Conflict 409)     ConflictError       Email already existed       
+ * @apiError (Conflict 409)     ConflictError       Email already existed
  */
 router.post('/register', validate(register), controller.register);
-
-
 
 /**
  * @api {post} /api/users/login
@@ -48,7 +47,7 @@ router.post('/register', validate(register), controller.register);
  */
 router.post('/login', validate(login), controller.login);
 
-//test route for authenticated user
+// test route for authenticated user
 router.get('/', auth, controller.listUser);
 
 module.exports = router;
