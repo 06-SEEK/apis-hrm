@@ -23,6 +23,6 @@ exports.login = catchAsync(async (req, res) => {
 });
 
 exports.listUser = catchAsync(async (req, res) => {
-  const users = await User.find({});
+  const users = await User.find({}, 'phone name email avatar');
   res.json({ users });
 });

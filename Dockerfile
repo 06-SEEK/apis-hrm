@@ -1,17 +1,18 @@
 FROM node:12-alpine
 
-# this makes the build fail in travis ! see https://github.com/nodejs/docker-node/issues/661
-# RUN npm install --global yarn
+ENV NODE_ENV=production
+ENV MONGO_URL mongodb://mongo:27017/test-api
 
+WORKDIR /usr/src/app
 
-COPY package.json .
-COPY yarn.lock .
+COPY ./package.json ./
+COPY ./yarn.lock ./
+
 
 RUN yarn install
 
 COPY . . 
 
-ENV NODE_ENV=production
 
-EXPOSE 3001
-CMD yarn start
+EXPOSE 3000
+CMD ["yarn", "start"]
