@@ -17,7 +17,7 @@ DB(config.mongoURL)
 
 // test server
 app.get('/', (req, res) => {
-  res.json('hello world');
+  res.json(`I am using port:${config.port}`);
 });
 
 // mount api routes
