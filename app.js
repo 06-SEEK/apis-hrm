@@ -45,6 +45,8 @@ const server = new ApolloServer({
     const { isAuth, user } = await auth(req);
     return { isAuth, user };
   },
+  playground: true,
+  introspection: true,
 });
 
 server.applyMiddleware({ app });
