@@ -1,10 +1,9 @@
 const express = require('express');
 
 const router = express.Router();
-const { validate } = require('express-validation');
+const { validate } = require('../util/validate');
 const { login, register } = require('../validations/user.validation');
 const controller = require('../.controllers/user.controller');
-const auth = require('../middlewares/auth');
 
 /**
  * @api {post} /api/users/register

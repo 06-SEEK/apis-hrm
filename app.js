@@ -44,7 +44,4 @@ app.use((err, req, res, next) => {
 // });
 
 // server.applyMiddleware({ app });
-
-app.listen(config.port, () =>
-  console.log(`Server is listening at port ${config.port}`)
-);
+module.exports = app;

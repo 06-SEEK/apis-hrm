@@ -1,14 +1,16 @@
 const { ValidationError } = require('express-validation');
 const httpStatus = require('http-status');
+const { TokenExpiredError } = require('jsonwebtoken');
 
 /**
  *Class representing an API error.
  *@param {string} message - Error message.
  *@param {number} statusCode - HTTP status code of error.
  *@param {boolean} isOperational - Whether the stack should be visible or not. True if not visible.
+ *@param {string} stack - Stack of error
  */
 class ApiError extends Error {
-  constructor(statusCode, message, isOperational = true, stack) {
+  constructor(statusCode, message, isOperational = true, stack = '') {
     super(message);
     this.statusCode = statusCode;
     this.message = message;
@@ -37,15 +39,23 @@ const errorHandler = (err, req, res, next) => {
  * If error is not an instanceOf APIError, convert it.
  */
 const converter = (err, req, res, next) => {
-  let convertedError = err;
+  let error = err;
   if (err instanceof ValidationError) {
-    convertedError = new ApiError(err.statusCode, 'Validation Error');
+    const message = err.details
+      .map((e) => Object.values(e))
+      .reduce((acc, currentValue) => acc.concat(currentValue), [])
+      .join(',');
+    error = new ApiError(err.statusCode, message);
+  } else if (err instanceof TokenExpiredError) {
+    error = new ApiError(httpStatus.BAD_REQUEST, err.message);
   } else if (!(err instanceof ApiError)) {
     // unexpected error, log error
-    convertedError = new ApiError(err.status, err.message, false, err.stack);
+    const status = err.statusCode || httpStatus.INTERNAL_SERVER_ERROR;
+    const message = err.message || httpStatus[status];
+    const stack = err.stack || '';
+    error = new ApiError(status, message, false, stack);
   }
-
-  return errorHandler(convertedError, req, res);
+  next(error);
 };
 
 /**
@@ -53,7 +63,7 @@ const converter = (err, req, res, next) => {
  */
 const notFound = (req, res, next) => {
   const err = new ApiError(httpStatus.NOT_FOUND, 'Not found');
-  return errorHandler(err, req, res);
+  next(err);
 };
 
 module.exports = {

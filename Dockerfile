@@ -12,9 +12,9 @@ COPY ./default.env ./.env
 RUN yarn install
 
 COPY . . 
-
+RUN yarn test
 
 EXPOSE 3000
 
-CMD ["node", "app"]
+CMD ["node", "index"]
 # CMD ["yarn", "start"]
