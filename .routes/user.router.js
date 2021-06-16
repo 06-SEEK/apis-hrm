@@ -2,8 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 const { validate } = require('express-validation');
-const controller = require('../controllers/user.controller');
 const { login, register } = require('../validations/user.validation');
+const controller = require('../.controllers/user.controller');
 const auth = require('../middlewares/auth');
 
 /**
@@ -46,8 +46,5 @@ router.post('/register', validate(register), controller.register);
  * @apiError (Bad Request 400)  CredentialsError    Credentials is invalid
  */
 router.post('/login', validate(login), controller.login);
-
-// test route for authenticated user
-router.get('/', auth, controller.listUser);
 
 module.exports = router;

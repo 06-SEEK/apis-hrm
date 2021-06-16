@@ -1,12 +1,13 @@
 const express = require('express');
+const {
+  listHistory,
+  postHistory,
+} = require('../.controllers/history.controller');
 
 const router = express.Router();
-const controller = require('../controllers/history.controller');
+const auth = require('../middlewares/auth');
 
-router.get('/', controller.listHistory);
-router.post('/', controller.postCreate);
+router.get('/', auth, listHistory);
+router.post('/', auth, postHistory);
 
-router.get('/:id', controller.findById);
-// router.patch("/:id", controller.patchUpdate);
-router.delete('/:id', controller.delete);
 module.exports = router;
