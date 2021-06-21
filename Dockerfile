@@ -9,7 +9,7 @@ WORKDIR /usr/src/app
 COPY ./package.json ./
 COPY ./yarn.lock ./
 
-COPY ./default.env ./.env
+COPY ./default.env ./.env                         
 RUN yarn install
 
 COPY . . 
