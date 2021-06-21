@@ -15,7 +15,7 @@ DB(config.mongoURL)
 
 app.get('/', (req, res) => res.send(`Hello: ${process.env.MSG}`));
 // mount api routes
-app.use('/api', require('./.routes'));
+app.use('/api', require('./routes'));
 
 // if error is not an instanceOf APIError, convert it.
 app.use(converter);

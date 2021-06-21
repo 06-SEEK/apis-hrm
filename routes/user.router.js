@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { validate } = require('../util/validate');
 const { login, register } = require('../validations/user.validation');
-const controller = require('../.controllers/user.controller');
+const controller = require('../controllers/user.controller');
 
 /**
  * @api {post} /api/users/register
