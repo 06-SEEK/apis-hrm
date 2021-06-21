@@ -29,5 +29,6 @@ notifications:
   email:
     recipients:
       - levanhiep.95.95@gmail.com
+      - baokhanh1306nsc@gmail.com
     on_success: always  
     on_failure: always

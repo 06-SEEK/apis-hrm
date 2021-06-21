@@ -5,7 +5,10 @@
     "scripts": {
         "dev": "nodemon index.js",
         "start": "node index.js",
-        "test": "jest -i --colors --verbose --detectOpenHandles"
+        "test": "jest -i --colors --verbose --detectOpenHandles",
+        "lint": "eslint .",
+        "coverage": "jest -i --coverage --detectOpenHandles",
+        "prettier": "prettier --check **/*.js"
     },
     "dependencies": {
         "apollo-server-core": "^2.25.0",

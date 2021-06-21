@@ -56,6 +56,10 @@ describe('User routes', () => {
         .send(newUser)
         .expect(httpStatus.CONFLICT);
     });
+
+    test('should return error with status 404 if the endpoint not found', async () => {
+      await request(app).get('/test').expect(httpStatus.NOT_FOUND);
+    });
   });
 
   describe('POST /api/users/login', () => {

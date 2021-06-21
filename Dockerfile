@@ -1,7 +1,7 @@
 FROM node:12-alpine
 
 ENV NODE_ENV=production
-ENV MONGO_URL mongodb+srv://dbadmin:dbpassword@cluster0.c9agf.mongodb.net/hrmdb?retryWrites=true&w=majority
+ENV DB_URL mongodb+srv://dbadmin:dbpassword@cluster0.c9agf.mongodb.net/hrmdb?retryWrites=true&w=majority
 
 WORKDIR /usr/src/app
 

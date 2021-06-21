@@ -28,20 +28,5 @@ app.use((err, req, res, next) => {
   errorHandler(err, req, res, next);
 });
 
-// const server = new ApolloServer({
-//   typeDefs,
-//   resolvers: {
-//     Date: dateScalar,
-//     // eslint-disable-next-line node/no-unsupported-features/es-syntax
-//     ...resolvers,
-//   },
-//   context: async ({ req }) => {
-//     const { isAuth, user } = await auth(req);
-//     return { isAuth, user };
-//   },
-//   playground: true,
-//   introspection: true,
-// });
-
 // server.applyMiddleware({ app });
 module.exports = app;
