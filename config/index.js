@@ -1,10 +1,11 @@
 require('dotenv').config();
 
+const mongoUrl =
+  process.env.NODE_ENV === 'test' ? process.env.DB_TEST : process.env.DB_URL;
+
 module.exports = {
   port: process.env.PORT || 3000,
-  mongoURL:
-    process.env.MONGO_URL ||
-    'mongodb+srv://dbadmin:dbpassword@cluster0.c9agf.mongodb.net/hrmdb?retryWrites=true&w=majority',
+  mongoURL: mongoUrl,
   secret_key: 'hrm',
   sk_time_life: 2678400,
 };

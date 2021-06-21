@@ -1,57 +1,18 @@
-const moment = require('moment');
 const History = require('../models/history.model');
+const { catchAsync } = require('../util');
+
+const listHistory = catchAsync(async (req, res) => {
+  const histories = await History.find({ user: req.user._id });
+  res.json({ histories });
+});
+
+const postHistory = catchAsync(async (req, res) => {
+  const history = new History({ user: req.user._id, result: req.body.result });
+  await history.save();
+  res.json({ history });
+});
 
 module.exports = {
-  listHistory: async function (req, res, next) {
-    // let data = await History.findByLambda();
-    // res.json(resSuccess(data));
-  },
-
-  findById: async function (req, res) {
-    // let id = req.params.id;
-    // let data = await History.findByLambda({ _id: id });
-    // res.json(resSuccess(data[0]));
-  },
-
-  postCreate: async function (req, res, next) {
-    // try {
-    // 	let entity = {
-    // 		user_id: req.body.user_id,
-    // 		result: req.body.result,
-    // 		create_at: moment.now(),
-    // 		is_deleted: false,
-    // 	};
-    // 	let history = await History.createByLambda(entity);
-    // 	res.json(
-    // 		resSuccess({
-    // 			data: history,
-    // 		})
-    // 	);
-    // } catch (error) {
-    // 	data = {
-    // 		...error,
-    // 		message: error.message,
-    // 		detail: error.detail,
-    // 	};
-    // 	res.json(resFail(data));
-    // }
-  },
-
-  delete: async function (req, res) {
-    // 	try {
-    // 		let id = req.params.id;
-    // 		let entity = {
-    // 			is_deleted: true,
-    // 		};
-    // 		let result = await History.updateByLambda({ _id: id }, entity);
-    // 		res.json(resSuccess(result));
-    // 	} catch (error) {
-    // 		data = {
-    // 			...error,
-    // 			message: error.message,
-    // 			detail: error.detail,
-    // 		};
-    // 		res.json(resFail(data));
-    // 	}
-  },
+  listHistory,
+  postHistory,
 };
