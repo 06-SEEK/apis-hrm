@@ -13,7 +13,7 @@ DB(config.mongoURL)
   .then(() => console.log('MongoDb connected'))
   .catch((e) => console.log(e));
 
-app.get('/', (req, res) => res.send(`Hello: ${process.env.MSG}`));
+app.get('/', (req, res) => res.send(`Hello world`));
 // mount api routes
 app.use('/api', require('./routes'));
 
