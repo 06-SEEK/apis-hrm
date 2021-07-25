@@ -4,7 +4,7 @@ sudo: required
 services:
   - docker
 
-before_install: 
+before_install:
   # install heroku CLI
   - wget -qO- https://toolbelt.heroku.com/install.sh | sh
   # login to docker registries (dockerhub + heroku)
@@ -25,9 +25,9 @@ deploy:
   on:
     branch: main
 
-notifications:  
+notifications:
   email:
     recipients:
-      - levanhiep.95.95@gmail.com
-    on_success: always  
+      - txd22081999@gmail.com
+    on_success: always
     on_failure: always
