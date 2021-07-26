@@ -30,5 +30,3 @@ app.use((err, req, res, next) => {
 
 // server.applyMiddleware({ app });
 module.exports = app;
-
-console.log('app.js file');
